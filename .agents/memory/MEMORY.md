@@ -1,0 +1,1 @@
+- [API code generation compatibility](api-codegen-compatibility.md) — keep generated API contracts, React Query version, and DOM iterable types aligned when extending routes.

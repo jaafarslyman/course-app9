@@ -219,19 +219,32 @@ function ChatSurface({
       fullScreen
     >
       <div className="group-chat-page" dir="rtl">
+        <div className="chat-intro-row">
+          <div className="chat-intro-copy">
+            <span className="chat-intro-kicker">تواصل وتعلّم</span>
+            <p>شارك سؤالًا أو فكرة، وتابع ما يشاركه مجتمع الدورة.</p>
+          </div>
+          <div className="chat-intro-note">
+            <ShieldCheck size={16} aria-hidden="true" />
+            <span>مساحة خاصة بأعضاء الدورة</span>
+          </div>
+        </div>
         <section className="chat-frame" aria-label="محادثة المجموعة">
           <div className="chat-room-bar">
             <div className="chat-room-avatar"><MessageCircle size={19} /></div>
             <div className="chat-room-details">
               <strong>مجموعة المتعلمين</strong>
-              <span>{chat.data ? 'تُحفَظ الرسائل تلقائيًا' : 'محادثة الدورة'}</span>
+              <span className={`chat-room-saved ${chat.data ? 'is-ready' : ''}`} data-testid="chat-room-status">
+                <i aria-hidden="true" />
+                {chat.data ? 'تُحفَظ الرسائل تلقائيًا' : 'محادثة الدورة'}
+              </span>
             </div>
-                {!isAdmin && (
-                  <div className="chat-room-context">
-                    <ShieldCheck size={15} aria-hidden="true" />
-                    <span>إشراف الدورة</span>
-                  </div>
-                )}
+            {!isAdmin && (
+              <div className="chat-room-context">
+                <ShieldCheck size={15} aria-hidden="true" />
+                <span>إشراف الدورة</span>
+              </div>
+            )}
             {isAdmin && chat.data && (
               <div className="chat-admin-control">
                 <div className="chat-control-copy">

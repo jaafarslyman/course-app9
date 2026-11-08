@@ -333,11 +333,10 @@
   box-shadow: none;
 }
 .course-video-screen .learner-media-frame {
-  display: grid;
+  display: block;
   width: 100%;
   min-height: 0;
   aspect-ratio: 16 / 9;
-  place-items: center;
   overflow: hidden;
   border-radius: 0;
   background: #050808;
@@ -346,8 +345,9 @@
   display: block;
   width: 100%;
   max-width: none;
-  height: 100%;
+  height: auto;
   max-height: none;
+  aspect-ratio: 16 / 9;
   background: #050808;
   object-fit: contain;
 }

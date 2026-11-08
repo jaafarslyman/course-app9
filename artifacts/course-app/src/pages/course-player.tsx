@@ -241,6 +241,8 @@ export function LearnerContentViewerPage() {
 
   const isValidSelection = Boolean(course && selected && contentId);
   const isVideoContent = selected?.kind === 'video';
+  const isNativeMediaContent =
+    selected?.kind === 'video' || selected?.kind === 'audio';
   const mediaIsReady = Boolean(selected && mediaUrl && mediaForItem === selected.id);
 
   return (
@@ -299,7 +301,11 @@ export function LearnerContentViewerPage() {
               className={`learner-content-layout learner-viewer-layout${isVideoContent ? ' learner-video-layout' : ''}`}
               onCopy={(event) => event.preventDefault()}
               onCut={(event) => event.preventDefault()}
-              onDragStart={(event) => event.preventDefault()}
+              onDragStart={
+                isNativeMediaContent
+                  ? undefined
+                  : (event) => event.preventDefault()
+              }
             >
               <section className={`panel learner-material${isVideoContent ? ' learner-video-material' : ''}`}>
                 {!isVideoContent ? (

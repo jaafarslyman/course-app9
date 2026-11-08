@@ -40,6 +40,14 @@ export function AppShell({
     if (audience !== 'learner') return;
 
     const blockBrowserCaptureAction = (event: Event) => {
+      const target = event.target;
+      if (
+        event.type === 'dragstart' &&
+        target instanceof Element &&
+        target.closest('video, audio')
+      ) {
+        return;
+      }
       event.preventDefault();
     };
     const blockCaptureShortcuts = (event: KeyboardEvent) => {

@@ -508,6 +508,279 @@
   }
 }
 
+/* A quiet, portrait-led sign-in for the learner and an equally spare admin gate. */
+.auth-page.learner-auth-page,
+.auth-page.admin-auth-page {
+  --auth-ink: #244744;
+  --auth-accent: #276a60;
+  --auth-page: #c8eee8;
+  position: relative;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  overflow: hidden;
+  background: var(--auth-page);
+  color: var(--auth-ink);
+}
+
+.learner-auth-page {
+  padding: 35px 22px 70px;
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(240, 250, 244, .42), transparent 48%),
+    #c8eee8 !important;
+}
+
+.learner-auth-content {
+  display: grid;
+  justify-items: center;
+  width: min(100%, 390px);
+  animation: auth-arrive .58s cubic-bezier(.2, .7, .25, 1) both;
+}
+
+.learner-portrait {
+  position: relative;
+  width: min(350px, 88vw);
+  height: 370px;
+  margin: -6px 0 13px;
+  isolation: isolate;
+}
+
+.learner-portrait-frame {
+  position: absolute;
+  z-index: -1;
+  width: min(326px, 84vw);
+  aspect-ratio: 1;
+  left: 50%;
+  bottom: 2px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(55, 119, 105, .20);
+  border-radius: 50%;
+  background: rgba(139, 202, 188, .30);
+  box-shadow: 0 19px 55px rgba(49, 109, 98, .08);
+}
+
+.learner-portrait-image {
+  position: absolute;
+  width: min(316px, 82vw);
+  height: 365px;
+  max-width: none;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  object-fit: cover;
+  object-position: 50% 12%;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 79%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 79%, transparent 100%);
+  user-select: none;
+}
+
+.learner-auth-form {
+  width: min(100%, 350px);
+}
+
+.learner-auth-form .auth-form,
+.admin-auth-card .auth-form {
+  display: grid;
+  gap: 12px;
+}
+
+.auth-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.auth-field {
+  position: relative;
+  display: block;
+  margin: 0;
+}
+
+.auth-field input {
+  width: 100%;
+  min-height: 56px;
+  padding: 15px 19px;
+  border: 1px solid rgba(42, 104, 93, .20);
+  border-radius: 15px;
+  outline: none;
+  background: rgba(248, 252, 247, .88);
+  color: #244744;
+  font: 500 15px/1.5 var(--app-font-sans);
+  box-shadow: 0 5px 18px rgba(33, 92, 80, .035);
+  transition: border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
+}
+
+.auth-field input::placeholder {
+  color: #8b9e98;
+}
+
+.auth-field input:focus {
+  border-color: #438579;
+  background: #f8fcf7;
+  box-shadow: 0 0 0 4px rgba(55, 129, 112, .12);
+}
+
+.learner-auth-form .button-primary,
+.admin-auth-card .button-primary {
+  width: 100%;
+  min-height: 55px;
+  justify-content: center;
+  border: 0;
+  border-radius: 15px;
+  background: #276a60;
+  color: #f8fbf5;
+  font: 600 15px/1.4 var(--app-font-sans);
+  box-shadow: 0 8px 20px rgba(36, 103, 91, .14);
+  transition: transform .18s ease, background-color .18s ease, opacity .18s ease;
+}
+
+.learner-auth-form .button-primary:hover:not(:disabled),
+.admin-auth-card .button-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: #1f5d54;
+}
+
+.learner-auth-form .button-primary:disabled,
+.admin-auth-card .button-primary:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+}
+
+.learner-auth-form .form-error,
+.admin-auth-card .form-error {
+  display: block;
+  margin-top: 7px;
+  color: #963f39;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.learner-auth-form .inline-alert,
+.admin-auth-card .inline-alert,
+.learner-auth-form .config-notice,
+.admin-auth-card .config-notice {
+  margin: 0;
+  border-radius: 13px;
+  line-height: 1.75;
+}
+
+.learner-auth-form .email-confirmation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 43px;
+  padding: 0 3px;
+  color: #55726b;
+  font-size: 13px;
+}
+
+.learner-auth-form .text-button {
+  padding: 6px 9px;
+  border: 0;
+  background: transparent;
+  color: #276a60;
+  font: 600 13px var(--app-font-sans);
+  cursor: pointer;
+}
+
+.learner-auth-form .access-code-input {
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: .19em;
+}
+
+.learner-auth-form .access-expiry-note {
+  margin: 11px 3px 0;
+  color: #617e77;
+  font-size: 11px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.learner-admin-link {
+  position: fixed;
+  left: max(24px, env(safe-area-inset-left));
+  bottom: max(22px, env(safe-area-inset-bottom));
+  z-index: 2;
+  padding: 8px 2px;
+  color: rgba(36, 71, 68, .72);
+  font-size: 12px;
+  direction: ltr;
+  text-decoration: none;
+  transition: color .18s ease;
+}
+
+.learner-admin-link:hover {
+  color: #174f49;
+}
+
+.admin-auth-page {
+  padding: 24px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(200, 238, 232, .55), transparent 46%),
+    #f3f4ee !important;
+}
+
+.admin-auth-form-area {
+  width: min(100%, 370px);
+  animation: auth-arrive .48s cubic-bezier(.2, .7, .25, 1) both;
+}
+
+.admin-auth-card {
+  display: grid;
+  gap: 17px;
+  width: 100%;
+}
+
+.admin-auth-card .auth-field input {
+  background: #fbfcf8;
+}
+
+@keyframes auth-arrive {
+  from { opacity: 0; transform: translateY(9px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 520px) {
+  .learner-auth-page {
+    padding: 18px 22px calc(78px + env(safe-area-inset-bottom));
+  }
+
+  .learner-portrait {
+    width: min(330px, 90vw);
+    height: min(360px, 44dvh);
+    min-height: 288px;
+    margin-bottom: 8px;
+  }
+
+  .learner-portrait-image {
+    height: 100%;
+    width: min(300px, 81vw);
+  }
+
+  .learner-portrait-frame {
+    width: min(310px, 84vw);
+  }
+
+  .learner-auth-form {
+    width: min(100%, 340px);
+  }
+
+  .learner-admin-link {
+    left: 20px;
+    bottom: max(14px, env(safe-area-inset-bottom));
+  }
+}
+
 /* Lughati — pocket-first editorial learning interface */
 :root {
   color-scheme: light;

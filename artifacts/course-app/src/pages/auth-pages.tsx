@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft, ArrowRight, KeyRound, LockKeyhole } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation } from 'wouter';
 import { z } from 'zod';
-import { AppLogo, InlineAlert, SetupNotice } from '@/components/app-shell';
+import { InlineAlert, SetupNotice } from '@/components/app-shell';
 import { Form } from '@/components/ui/form';
 import {
   createSessionSecret,
@@ -78,29 +77,9 @@ export function AdminSignInPage() {
   }
 
   return (
-    <div className="auth-page">
-      <section className="auth-visual">
-        <AppLogo />
-        <div className="auth-visual-copy">
-          <div className="eyebrow">مساحة فريق الدورة</div>
-          <h1>إدارة الوصول<br />بكل وضوح.</h1>
-          <p>
-            سجّل الدخول بحساب المشرف الموجود في Supabase لإدارة حسابات
-            المتعلمين ورموزهم.
-          </p>
-        </div>
-        <div className="auth-visual-footer">لوحة إدارة الدورة · لُغتي بثقة</div>
-      </section>
-      <section className="auth-form-area">
-        <div className="panel auth-card">
-          <div className="dialog-icon">
-            <LockKeyhole size={21} aria-hidden="true" />
-          </div>
-          <div className="eyebrow">الإدارة</div>
-          <h2>تسجيل دخول المشرف</h2>
-          <p className="auth-copy">
-            استخدم بيانات حساب المشرف الذي أضفته في Supabase Auth.
-          </p>
+    <main className="auth-page admin-auth-page" dir="rtl">
+      <section className="admin-auth-form-area" aria-label="تسجيل دخول المشرف">
+        <div className="admin-auth-card">
           {!hasSupabaseConfig && <SetupNotice />}
 
           <Form {...form}>
@@ -109,13 +88,15 @@ export function AdminSignInPage() {
               className="auth-form"
               noValidate
             >
-              <label className="field">
-                البريد الإلكتروني
+              <label className="field auth-field">
+                <span className="auth-sr-only">البريد الإلكتروني</span>
                 <input
                   type="email"
                   inputMode="email"
                   autoComplete="username"
                   className="ltr"
+                  placeholder="البريد الإلكتروني"
+                  aria-label="البريد الإلكتروني"
                   {...form.register('email')}
                   data-testid="input-admin-email"
                 />
@@ -125,11 +106,13 @@ export function AdminSignInPage() {
                   </span>
                 )}
               </label>
-              <label className="field">
-                كلمة المرور
+              <label className="field auth-field">
+                <span className="auth-sr-only">كلمة المرور</span>
                 <input
                   type="password"
                   autoComplete="current-password"
+                  placeholder="كلمة المرور"
+                  aria-label="كلمة المرور"
                   {...form.register('password')}
                   data-testid="input-admin-password"
                 />
@@ -147,20 +130,19 @@ export function AdminSignInPage() {
                 data-testid="button-admin-signin"
               >
                 {submitting ? 'جارٍ التحقق…' : 'تسجيل الدخول'}
-                <ArrowLeft size={16} aria-hidden="true" />
               </button>
             </form>
           </Form>
-
-          <div className="auth-links">
-            <Link href="/" data-testid="link-learner-signin">
-              <ArrowRight size={15} aria-hidden="true" />
-              العودة إلى دخول المتعلّمين
-            </Link>
-          </div>
         </div>
       </section>
-    </div>
+      <Link
+        href="/"
+        className="learner-admin-link admin-learner-link"
+        data-testid="link-learner-signin"
+      >
+        <span>دخول المتعلّمين</span>
+      </Link>
+    </main>
   );
 }
 
@@ -235,36 +217,17 @@ export function LearnerAccessPage() {
   }
 
   return (
-    <div className="auth-page">
-      <section className="auth-visual">
-        <AppLogo />
-        <div className="auth-visual-copy">
-          <div className="eyebrow">مساحتك لتتعلّمي بطريقتك</div>
-          <h1>كل كلمة جديدة،<br />تفتح لك بابًا.</h1>
-          <p>
-            رحلة ممتعة وعملية تساعدك على التحدث بالإنجليزية بثقة، خطوة
-            بخطوة.
-          </p>
-          <div className="auth-pills">
-            <span>تعلّم بخطوات واضحة</span>
-            <span>رمز خاص بك</span>
-            <span>دخول دائم</span>
-          </div>
+    <main className="auth-page learner-auth-page" dir="rtl">
+      <section className="learner-auth-content">
+        <div className="learner-portrait" aria-hidden="true">
+          <div className="learner-portrait-frame" />
+          <img
+            className="learner-portrait-image"
+            src={`${import.meta.env.BASE_URL}assets/learner-signin-character.png`}
+            alt=""
+          />
         </div>
-        <div className="auth-visual-footer">لُغتي بثقة · English, one step at a time</div>
-      </section>
-      <section className="auth-form-area">
-        <div className="panel auth-card">
-          <div className="dialog-icon">
-            <KeyRound size={21} aria-hidden="true" />
-          </div>
-          <div className="eyebrow">مساحة المتعلّم</div>
-          <h2>{step === 1 ? 'أهلًا بكِ في رحلتك' : 'أدخلي رمز الدخول'}</h2>
-          <p className="auth-copy">
-            {step === 1
-              ? 'اكتبي البريد الإلكتروني الذي أضافه المشرف.'
-              : 'استخدمي الرمز المكوّن من ١٠ خانات الذي استلمتِه من المشرف.'}
-          </p>
+        <div className="learner-auth-form">
           {!hasSupabaseConfig && <SetupNotice />}
 
           <Form {...form}>
@@ -281,13 +244,15 @@ export function LearnerAccessPage() {
               noValidate
             >
               {step === 1 ? (
-                <label className="field">
-                  البريد الإلكتروني
+                <label className="field auth-field">
+                  <span className="auth-sr-only">البريد الإلكتروني</span>
                   <input
                     type="email"
                     inputMode="email"
                     autoComplete="email"
                     className="ltr"
+                    placeholder="البريد الإلكتروني"
+                    aria-label="البريد الإلكتروني"
                     {...form.register('email')}
                     data-testid="input-learner-email"
                   />
@@ -313,8 +278,8 @@ export function LearnerAccessPage() {
                       تغيير
                     </button>
                   </div>
-                  <label className="field">
-                    رمز الدخول لمرة واحدة
+                  <label className="field auth-field">
+                    <span className="auth-sr-only">رمز الدخول لمرة واحدة</span>
                     <input
                       type="text"
                       autoComplete="one-time-code"
@@ -323,6 +288,7 @@ export function LearnerAccessPage() {
                       maxLength={10}
                       className="ltr access-code-input"
                       placeholder="XXXXXXXXXX"
+                      aria-label="رمز الدخول لمرة واحدة"
                       {...form.register('code')}
                       data-testid="input-access-code"
                     />
@@ -343,26 +309,21 @@ export function LearnerAccessPage() {
                 {submitting
                   ? 'جارٍ التحقق…'
                   : step === 1
-                    ? 'متابعة إلى رمز الدخول'
+                    ? 'التالي'
                     : 'دخول إلى التطبيق'}
-                <ArrowLeft size={16} aria-hidden="true" />
               </button>
             </form>
           </Form>
 
-          {step === 2 && (
-            <p className="inline-note access-expiry-note">
-              الرمز لا ينتهي بمرور الوقت؛ يصبح غير صالح بعد تسجيل الدخول
-            </p>
-          )}
-          <div className="auth-links">
-            <Link href="/admin/sign-in" data-testid="link-admin-signin">
-              دخول المشرف
-              <ArrowLeft size={15} aria-hidden="true" />
-            </Link>
-          </div>
         </div>
       </section>
-    </div>
+      <Link
+        href="/admin/sign-in"
+        className="learner-admin-link"
+        data-testid="link-admin-signin"
+      >
+        <span lang="en">Admin access</span>
+      </Link>
+    </main>
   );
 }

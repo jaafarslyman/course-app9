@@ -318,6 +318,60 @@
   .course-pages *, .course-pages *:before, .course-pages *:after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
 
+.course-video-screen {
+  min-height: 100dvh;
+  background: #090e0e;
+  color: #f5f1e7;
+}
+.course-video-screen .learner-video-layout { display: block; }
+.course-video-screen .learner-video-material {
+  min-height: 100dvh;
+  padding: 0 0 28px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.course-video-screen .learner-media-frame {
+  display: grid;
+  width: 100%;
+  min-height: 0;
+  aspect-ratio: 16 / 9;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 0;
+  background: #050808;
+}
+.course-video-screen .learner-media-frame video {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  background: #050808;
+  object-fit: contain;
+}
+.course-video-screen .learner-video-title {
+  margin: 0;
+  padding: 22px clamp(18px, 4vw, 56px) 12px;
+  border: 0;
+}
+.course-video-screen .learner-video-title .eyebrow { color: #c6ad70; }
+.course-video-screen .learner-video-title h2 {
+  color: #f5f1e7;
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+}
+.course-video-screen .learner-supplemental-note,
+.course-video-screen .course-muted-note,
+.course-video-screen .inline-alert,
+.course-video-screen .learner-material-actions {
+  margin-inline: clamp(18px, 4vw, 56px);
+}
+.course-video-screen .learner-material-actions {
+  padding-bottom: 12px;
+}
+.course-video-screen .course-muted-note { color: #b6c2ba; }
+
 /* Editorial learning studio — warm paper, measured hierarchy, and confident teal. */
 .course-pages {
   --course-ink: #263d3b;

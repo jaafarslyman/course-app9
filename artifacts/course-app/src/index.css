@@ -662,6 +662,28 @@ button, a { touch-action: manipulation; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
 
+.full-screen-shell {
+  display: block;
+  min-height: 100dvh;
+  padding-bottom: 0 !important;
+  background: #090e0e;
+}
+.full-screen-shell .sidebar,
+.full-screen-shell .topbar,
+.full-screen-shell .mobile-nav {
+  display: none !important;
+}
+.full-screen-shell .main-area {
+  width: 100%;
+  min-height: 100dvh;
+}
+.full-screen-shell .content-wrap {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
 .page-heading {
   align-items: flex-end;
   gap: 20px;

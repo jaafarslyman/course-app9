@@ -23,7 +23,6 @@ export function LearnerHomePage() {
         <PageHeading
           eyebrow="أهلًا بعودتك"
           title={learner ? `مرحبًا، ${learner.name}` : 'مساحة المتعلّم'}
-          subtitle="خطوة قصيرة اليوم تصنع فرقًا. اختر مسارك وتعلّم بالوتيرة التي تناسبك."
         />
         <section className="panel learner-welcome" data-testid="panel-learner-welcome">
           <div className="dialog-icon">

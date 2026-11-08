@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   BookOpen,
   Check,
@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { Link, useParams } from 'wouter';
 import { useCreateCourseMediaSignedUrl } from '@/lib/media-api';
+import { captureVideoPosterFrame } from '@/lib/video-thumbnail';
 import { LearnerCourseCard } from '@/components/learner-course-card';
 import {
   AppShell,
@@ -105,27 +106,46 @@ function getContentHref(
 
 function VideoThumbnail({ item }: { item: CourseContentItem }) {
   const signedUrlMutation = useCreateCourseMediaSignedUrl();
+  const thumbnailRef = useRef<HTMLDivElement | null>(null);
   const [thumbnailUrl, setThumbnailUrl] = useState('');
+  const [isVisible, setIsVisible] = useState(false);
   const [thumbnailStatus, setThumbnailStatus] = useState<
-    'loading' | 'ready' | 'missing' | 'unavailable'
+    'loading' | 'ready' | 'unavailable'
   >('loading');
 
   useEffect(() => {
-    let cancelled = false;
-    setThumbnailUrl('');
-
-    if (!item.hasThumbnail || !item.thumbnailStoragePath) {
-      setThumbnailStatus('missing');
-      return () => {
-        cancelled = true;
-      };
+    const element = thumbnailRef.current;
+    if (!element) return;
+    if (typeof IntersectionObserver === 'undefined') {
+      setIsVisible(true);
+      return;
     }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '180px' },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+    let cancelled = false;
+    const controller = new AbortController();
+    setThumbnailUrl('');
 
     const learnerSessionSecret = readLearnerSession();
     if (!learnerSessionSecret) {
       setThumbnailStatus('unavailable');
       return () => {
         cancelled = true;
+        controller.abort();
       };
     }
 
@@ -134,20 +154,32 @@ function VideoThumbnail({ item }: { item: CourseContentItem }) {
       data: {
         contentId: item.id,
         learnerSessionSecret,
-        mediaType: 'thumbnail',
+        mediaType:
+          item.hasThumbnail && item.thumbnailStoragePath
+            ? 'thumbnail'
+            : 'content',
       },
-    }).then((result) => {
+    }).then(async (result) => {
       if (cancelled) return;
-      setThumbnailUrl(result.signedUrl);
+      const url =
+        item.hasThumbnail && item.thumbnailStoragePath
+          ? result.signedUrl
+          : await captureVideoPosterFrame(result.signedUrl, controller.signal);
+      if (cancelled) return;
+      setThumbnailUrl(url);
       setThumbnailStatus('ready');
     }).catch(() => {
-      if (!cancelled) setThumbnailStatus('unavailable');
+      if (!cancelled && !controller.signal.aborted) {
+        setThumbnailStatus('unavailable');
+      }
     });
 
     return () => {
       cancelled = true;
+      controller.abort();
     };
   }, [
+    isVisible,
     item.id,
     item.hasThumbnail,
     item.thumbnailStoragePath,
@@ -155,7 +187,7 @@ function VideoThumbnail({ item }: { item: CourseContentItem }) {
   ]);
 
   return (
-    <div className="learner-video-thumbnail">
+    <div ref={thumbnailRef} className="learner-video-thumbnail">
       {thumbnailStatus === 'ready' && thumbnailUrl ? (
         <img
           src={thumbnailUrl}
@@ -168,10 +200,8 @@ function VideoThumbnail({ item }: { item: CourseContentItem }) {
           <Video size={25} aria-hidden="true" />
           <span>
             {thumbnailStatus === 'loading'
-              ? 'جارٍ تحميل الصورة المصغّرة'
-              : thumbnailStatus === 'unavailable'
-                ? 'تعذّر تحميل الصورة المصغّرة'
-                : 'لا توجد صورة مصغّرة'}
+              ? 'جارٍ تجهيز معاينة الفيديو'
+              : 'تعذّر تجهيز معاينة الفيديو'}
           </span>
         </div>
       )}

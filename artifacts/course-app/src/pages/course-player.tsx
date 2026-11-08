@@ -240,11 +240,19 @@ export function LearnerContentViewerPage() {
   }
 
   const isValidSelection = Boolean(course && selected && contentId);
+  const isVideoContent = selected?.kind === 'video';
   const mediaIsReady = Boolean(selected && mediaUrl && mediaForItem === selected.id);
 
   return (
-    <AppShell title={selected?.title ?? 'المادة'} audience="learner">
-      <div className="course-pages" dir="rtl">
+    <AppShell
+      title={selected?.title ?? 'المادة'}
+      audience="learner"
+      fullScreen={isVideoContent}
+    >
+      <div
+        className={`course-pages${isVideoContent ? ' course-video-screen' : ''}`}
+        dir="rtl"
+      >
         {!isValidSelection || !course || !selected ? (
           <section className="panel">
             <EmptyState
@@ -258,47 +266,53 @@ export function LearnerContentViewerPage() {
           </section>
         ) : (
           <>
-            <nav className="course-breadcrumbs learner-viewer-breadcrumbs" aria-label="مسار المادة">
-              <Link href="/learn/course">دوراتي</Link>
-              <ChevronLeft size={14} aria-hidden="true" />
-              <Link href={courseHref}>{course.name}</Link>
-              {level ? (
-                <>
+            {!isVideoContent ? (
+              <>
+                <nav className="course-breadcrumbs learner-viewer-breadcrumbs" aria-label="مسار المادة">
+                  <Link href="/learn/course">دوراتي</Link>
                   <ChevronLeft size={14} aria-hidden="true" />
-                  <Link href={levelHref}>{level.title}</Link>
-                </>
-              ) : null}
-              {section ? (
-                <>
+                  <Link href={courseHref}>{course.name}</Link>
+                  {level ? (
+                    <>
+                      <ChevronLeft size={14} aria-hidden="true" />
+                      <Link href={levelHref}>{level.title}</Link>
+                    </>
+                  ) : null}
+                  {section ? (
+                    <>
+                      <ChevronLeft size={14} aria-hidden="true" />
+                      <Link href={sectionHref}>{section.title}</Link>
+                    </>
+                  ) : null}
                   <ChevronLeft size={14} aria-hidden="true" />
-                  <Link href={sectionHref}>{section.title}</Link>
-                </>
-              ) : null}
-              <ChevronLeft size={14} aria-hidden="true" />
-              <span>{selected.title}</span>
-            </nav>
-            <PageHeading
-              eyebrow={`${currentFlat?.group ?? 'محتوى الدورة'} · ${kindLabels[selected.kind]}`}
-              title={selected.title}
-              subtitle="تابع المادة هنا، وسيُحفظ تقدمك أثناء التعلّم."
-            />
-            {savingError && <InlineAlert>{savingError}</InlineAlert>}
+                  <span>{selected.title}</span>
+                </nav>
+                <PageHeading
+                  eyebrow={`${currentFlat?.group ?? 'محتوى الدورة'} · ${kindLabels[selected.kind]}`}
+                  title={selected.title}
+                  subtitle="تابع المادة هنا، وسيُحفظ تقدمك أثناء التعلّم."
+                />
+                {savingError && <InlineAlert>{savingError}</InlineAlert>}
+              </>
+            ) : null}
             <div
-              className="learner-content-layout learner-viewer-layout"
+              className={`learner-content-layout learner-viewer-layout${isVideoContent ? ' learner-video-layout' : ''}`}
               onCopy={(event) => event.preventDefault()}
               onCut={(event) => event.preventDefault()}
               onDragStart={(event) => event.preventDefault()}
             >
-              <section className="panel learner-material">
-                <div className="learner-material-header">
-                  <div>
-                    <div className="eyebrow">{kindLabels[selected.kind]}</div>
-                    <h2>{selected.title}</h2>
+              <section className={`panel learner-material${isVideoContent ? ' learner-video-material' : ''}`}>
+                {!isVideoContent ? (
+                  <div className="learner-material-header">
+                    <div>
+                      <div className="eyebrow">{kindLabels[selected.kind]}</div>
+                      <h2>{selected.title}</h2>
+                    </div>
+                    {selected.progress?.completed ? (
+                      <span className="course-status"><Check size={14} /> مكتملة</span>
+                    ) : null}
                   </div>
-                  {selected.progress?.completed ? (
-                    <span className="course-status"><Check size={14} /> مكتملة</span>
-                  ) : null}
-                </div>
+                ) : null}
                 {['video', 'audio', 'image'].includes(selected.kind) ? (
                   mediaError ? (
                     <div className="learner-media-frame">
@@ -385,6 +399,20 @@ export function LearnerContentViewerPage() {
                     {selected.body || 'ابدأ بالقراءة بهدوء، ثم علّم المادة مكتملة عندما تنتهي.'}
                   </div>
                 )}
+                {isVideoContent ? (
+                  <div className="learner-material-header learner-video-title">
+                    <div>
+                      <div className="eyebrow">
+                        {currentFlat?.group ?? 'محتوى الدورة'} · {kindLabels[selected.kind]}
+                      </div>
+                      <h2>{selected.title}</h2>
+                    </div>
+                    {selected.progress?.completed ? (
+                      <span className="course-status"><Check size={14} /> مكتملة</span>
+                    ) : null}
+                  </div>
+                ) : null}
+                {isVideoContent && savingError ? <InlineAlert>{savingError}</InlineAlert> : null}
                 {selected.supplementalNote?.trim() ? (
                   <aside className="learner-supplemental-note">
                     <strong>ملاحظة إضافية</strong>

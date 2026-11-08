@@ -10,13 +10,11 @@ import {
   SetupNotice,
 } from '@/components/app-shell';
 import {
-  AdminCommunityPage,
   AdminLearnersPage,
   AdminOverview,
 } from '@/pages/admin';
 import { AdminSignInPage, LearnerAccessPage } from '@/pages/auth-pages';
 import {
-  LearnerCommunityPage,
   LearnerContentPage,
   LearnerHomePage,
 } from '@/pages/learner';
@@ -71,12 +69,6 @@ export default function App() {
               <CourseBuilderPage />
             </RequireAdmin>
           </Route>
-          <Route path="/admin/community">
-            <RequireAdmin>
-              <AdminCommunityPage />
-            </RequireAdmin>
-          </Route>
-
           <Route path="/learn">
             <RequireLearner>
               <LearnerHomePage />
@@ -122,12 +114,6 @@ export default function App() {
               <LearnerCourseCatalogPage />
             </RequireLearner>
           </Route>
-          <Route path="/learn/community">
-            <RequireLearner>
-              <LearnerCommunityPage />
-            </RequireLearner>
-          </Route>
-
           <Route>
             <NotFound />
           </Route>

@@ -13,15 +13,6 @@ Once th user finishes a video or content type, it's marked as done.
 
 The user can view any content type without finishing tge previous ones.
 
-2) interactive space:
-Basically, a text app just like telegram.
-
-The admin can send any type of content, including text messages, voice notes, images and videos.
-
-The users can also send back and respond normally, the catch is there are no seperate chats or private chats, this interactive space will be like a group chat.
-
-The admin can turn messaging on and off via a toggle normally, when off he can only send.
-
 3) security: this must be discussed:
 This course is paid and the payments aren't online, so the admin wants to recive the money manually first, them when he verifies it he wants to give access to the course, the catch is we don't want access to the course to be shared, we though of a code, a one time useage code so when someone buys the course, the admin gives him the one time usage random generated code, tge user enters the code and he is in the app, there os no credentials for user accounts so there is no sign in sign out, each user is linked to his one time usage code, and he can't get out of the app (log out) unless the admin logs him out.
 

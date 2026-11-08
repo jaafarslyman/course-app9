@@ -4,7 +4,6 @@ import {
   KeyRound,
   LayoutDashboard,
   LogOut,
-  MessagesSquare,
   UsersRound,
 } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
@@ -14,13 +13,11 @@ const adminNavigation = [
   { href: '/admin', label: 'نظرة عامة', icon: LayoutDashboard },
   { href: '/admin/students', label: 'الطلاب', icon: UsersRound },
   { href: '/admin/courses', label: 'هيكل الدورة', icon: BookOpen },
-  { href: '/admin/community', label: 'مساحة المجموعة', icon: MessagesSquare },
 ];
 
 const learnerNavigation = [
   { href: '/learn', label: 'الرئيسية', icon: LayoutDashboard },
   { href: '/learn/course', label: 'دورتي', icon: BookOpen },
-  { href: '/learn/community', label: 'مساحة المجموعة', icon: MessagesSquare },
 ];
 
 type AppShellProps = {

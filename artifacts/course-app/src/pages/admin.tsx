@@ -32,7 +32,6 @@ import {
 } from '@/components/app-shell';
 import { createAccessCode } from '@/lib/learner-session';
 import { callRpc } from '@/lib/supabase';
-import { GroupChatPage } from '@/pages/group-chat';
 
 export type LearnerRecord = {
   id: string;
@@ -720,8 +719,4 @@ export function AdminCoursesPage() {
       </section>
     </AppShell>
   );
-}
-
-export function AdminCommunityPage() {
-  return <GroupChatPage audience="admin" />;
 }

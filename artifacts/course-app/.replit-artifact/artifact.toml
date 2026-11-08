@@ -1,7 +1,7 @@
 kind = "web"
 previewPath = "/"
 title = "Course App"
-description = "A course platform for learners and instructors to discover courses, manage course content, and collaborate through group chat, with Supabase as its backend."
+description = "A course platform for learners and instructors to discover courses and manage course content, with Supabase as its backend."
 version = "1.0.0"
 id = "artifacts/course-app"
 router = "path"

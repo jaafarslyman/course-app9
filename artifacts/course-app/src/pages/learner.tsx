@@ -1,16 +1,12 @@
 import { useMemo } from 'react';
 import {
   BookOpen,
-  ChevronLeft,
   LibraryBig,
-  MessagesSquare,
 } from 'lucide-react';
-import { Link } from 'wouter';
 import { AppShell, EmptyState, LoadingState, PageHeading } from '@/components/app-shell';
 import { LearnerCourseCard } from '@/components/learner-course-card';
 import { useLearnerSession } from '@/lib/learner-session-context';
 import { useLearnerCourses } from '@/lib/course-api';
-import { GroupChatPage } from '@/pages/group-chat';
 import { LearnerContentViewerPage } from '@/pages/course-player';
 
 export function LearnerHomePage() {
@@ -68,18 +64,9 @@ export function LearnerHomePage() {
             <EmptyState title="لا توجد دروس متاحة بعد" description="تم تجهيز دخولك. ستظهر الدورة ومحتواها هنا عند إضافتهما." icon={LibraryBig} />
           </section>
         )}
-        <Link className="learner-home-community" href="/learn/community" data-testid="link-learner-community">
-          <span className="learner-home-community-icon"><MessagesSquare size={20} /></span>
-          <span><strong>مساحة المجموعة</strong><small>تابع المحادثة مع المتعلمين</small></span>
-          <ChevronLeft size={17} />
-        </Link>
       </div>
     </AppShell>
   );
-}
-
-export function LearnerCommunityPage() {
-  return <GroupChatPage audience="learner" />;
 }
 
 export function LearnerContentPage() {
